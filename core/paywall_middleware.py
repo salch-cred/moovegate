@@ -9,7 +9,7 @@ import uuid
 from typing import Callable, Optional, Dict, Any
 
 from .moove_client import MooveClient, MooveAPIError
-from .types import PaymentStatus, PaywallChallenge
+from .schemas import PaymentStatus, PaywallChallenge
 
 logger = logging.getLogger("moovegate.paywall")
 

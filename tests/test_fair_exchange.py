@@ -9,7 +9,7 @@ import time
 
 from core.cryptography import seal_deliverable, open_deliverable, compute_sha256
 from core.moove_client import MooveClient, MooveAPIError
-from core.types import PaymentStatus, PaymentLinkCreate
+from core.schemas import PaymentStatus, PaymentLinkCreate
 from core.fair_exchange_state_machine import FairExchangeContract, ExchangeState
 
 

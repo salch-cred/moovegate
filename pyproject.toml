@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "moovegate"
+version = "1.0.0"
+description = "Autonomous Agent-to-Agent (A2A) Micro-Commerce Gateway & MCP Server for Moove Agentic Payments"
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [
+    { name = "MooveGate Protocol Contributors" }
+]
+keywords = ["moove", "agentic-payments", "mcp", "ai-agents", "cryptocurrency", "web3", "escrow"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+dependencies = [
+    "pydantic>=1.10.0",
+]
+
+[project.scripts]
+moovegate = "cli:main"
+
+[project.urls]
+Homepage = "https://github.com/salch-cred/moovegate"
+Documentation = "https://github.com/salch-cred/moovegate#readme"
+Repository = "https://github.com/salch-cred/moovegate.git"
+"Bug Tracker" = "https://github.com/salch-cred/moovegate/issues"

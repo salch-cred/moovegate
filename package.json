@@ -1,0 +1,26 @@
+{
+  "name": "moovegate",
+  "version": "1.0.0",
+  "description": "Autonomous Agent-to-Agent Micro-Commerce Gateway & MCP Server for Moove Agentic Payments",
+  "main": "sdk/typescript/moovegate.ts",
+  "scripts": {
+    "test": "python -m unittest discover tests",
+    "benchmark": "python core/benchmark.py",
+    "simulate": "python simulation/run_autonomous_economy.py"
+  },
+  "keywords": [
+    "moove",
+    "agentic-payments",
+    "ai-agents",
+    "mcp-server",
+    "web3",
+    "usdc",
+    "crypto-payments"
+  ],
+  "author": "salch-cred",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/salch-cred/moovegate.git"
+  }
+}

@@ -11,7 +11,7 @@ from typing import Dict, Any, Optional
 
 from .cryptography import seal_deliverable, open_deliverable
 from .moove_client import MooveClient, MooveAPIError
-from .types import PaymentStatus
+from .schemas import PaymentStatus
 
 logger = logging.getLogger("moovegate.fair_exchange")
 

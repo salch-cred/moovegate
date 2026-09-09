@@ -4,7 +4,7 @@ Built on Moove Agentic Payments infrastructure.
 """
 
 from core.moove_client import MooveClient, MooveAPIError
-from core.types import PaymentLink, PaymentLinkCreate, PaymentStatus, PaywallChallenge
+from core.schemas import PaymentLink, PaymentLinkCreate, PaymentStatus, PaywallChallenge
 from core.paywall_middleware import moove_paywall, MoovePaymentRequired, FastAPIMooveMiddleware
 from core.fair_exchange_state_machine import FairExchangeContract, ExchangeState
 from core.cryptography import seal_deliverable, open_deliverable, compute_sha256

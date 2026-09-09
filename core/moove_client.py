@@ -12,7 +12,7 @@ import urllib.request
 import urllib.error
 import json
 
-from .types import PaymentLink, PaymentLinkCreate, PaymentStatus
+from .schemas import PaymentLink, PaymentLinkCreate, PaymentStatus
 
 logger = logging.getLogger("moovegate.client")
 
