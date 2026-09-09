@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MooveGate — Autonomous Agent-to-Agent Micro-Commerce on Moove Rails</title>
+  <meta name="description" content="The first Autonomous Agent-to-Agent (A2A) Micro-Commerce Gateway and Model Context Protocol (MCP) Server for Moove Agentic Payments. Zero custody, cryptographic fair-exchange.">
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            clay: {
+              bg: '#08090D',
+              surface: '#11131B',
+              card: '#161924',
+              hover: '#1E2230',
+              border: '#242838',
+              borderSubtle: '#1B1E2B',
+              accent: '#FFCE31', // Moove Yellow
+              accentSoft: 'rgba(255, 206, 49, 0.12)',
+              textPrimary: '#F1F3F7',
+              textSecondary: '#8E94A5',
+              textMuted: '#585E72',
+              emerald: '#10B981',
+              emeraldSoft: 'rgba(16, 185, 129, 0.12)',
+              blue: '#3B82F6',
+              blueSoft: 'rgba(59, 130, 246, 0.12)',
+              purple: '#8B5CF6',
+              purpleSoft: 'rgba(139, 92, 246, 0.12)',
+            }
+          },
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+            mono: ['JetBrains Mono', 'Menlo', 'monospace'],
+          },
+          animation: {
+            'flow': 'flowPulse 1.5s infinite linear',
+            'float-slow': 'floating 4s ease-in-out infinite',
+            'pulse-glow': 'pulseGlow 2.5s infinite',
+          },
+          keyframes: {
+            flowPulse: {
+              'to': { strokeDashoffset: '-20' },
+            },
+            floating: {
+              '0%, 100%': { transform: 'translateY(0px)' },
+              '50%': { transform: 'translateY(-8px)' },
+            },
+            pulseGlow: {
+              '0%, 100%': { opacity: '0.4' },
+              '50%': { opacity: '0.8' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      background-color: #08090D;
+      color: #F1F3F7;
+      font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+      -webkit-font-smoothing: antialiased;
+    }
+    .clay-grid {
+      background-size: 40px 40px;
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+    }
+    .hero-glow {
+      background: radial-gradient(circle at 50% 30%, rgba(255, 206, 49, 0.12) 0%, transparent 65%);
+    }
+    .glow-card:hover {
+      box-shadow: 0 0 35px rgba(255, 206, 49, 0.08);
+      border-color: rgba(255, 206, 49, 0.3);
+    }
+    .flow-line {
+      stroke-dasharray: 6, 6;
+      animation: flowPulse 1.2s linear infinite;
+    }
+    @keyframes flowPulse {
+      to { stroke-dashoffset: -12; }
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col clay-grid selection:bg-clay-accent selection:text-black">
+
+  <!-- ==================== TOP NAVIGATION ==================== -->
+  <nav class="border-b border-clay-border bg-clay-bg/85 backdrop-blur-md sticky top-0 z-50 h-16">
+    <div class="max-w-7xl mx-auto h-full px-6 flex items-center justify-between">
+      
+      <!-- Brand Logo -->
+      <a href="#" class="flex items-center gap-3 group">
+        <div class="w-8 h-8 rounded-lg bg-clay-accent flex items-center justify-center font-extrabold text-black text-sm shadow-sm transition group-hover:scale-105">
+          <!-- Hugeicons: Layers -->
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+          </svg>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="font-bold text-lg text-white tracking-tight">MooveGate</span>
+          <span class="bg-clay-accentSoft text-clay-accent border border-clay-accent/30 text-[10px] font-bold px-2 py-0.5 rounded-full">Protocol v1.0</span>
+        </div>
+      </a>
+
+      <!-- Center Links -->
+      <div class="hidden md:flex items-center gap-7 text-xs font-semibold text-clay-textSecondary">
+        <a href="#problem" class="hover:text-white transition">The Problem</a>
+        <a href="#protocol" class="hover:text-white transition">How It Works</a>
+        <a href="#mcp" class="hover:text-white transition">MCP Server</a>
+        <a href="#demo" class="hover:text-white transition">Interactive Demo</a>
+        <a href="#grant" class="hover:text-white transition flex items-center gap-1">
+          <span>$10k Developer Fund</span>
+          <span class="w-1.5 h-1.5 rounded-full bg-clay-accent animate-pulse"></span>
+        </a>
+      </div>
+
+      <!-- Right CTA -->
+      <div class="flex items-center gap-3">
+        <a href="https://github.com/salch-cred/moovegate" target="_blank" class="hidden sm:flex items-center gap-1.5 bg-clay-card hover:bg-clay-hover border border-clay-border text-white text-xs font-semibold px-3.5 py-2 rounded-lg transition">
+          <!-- Hugeicons: Github -->
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+          </svg>
+          <span>Star on GitHub</span>
+        </a>
+
+        <a href="dashboard/index.html" class="bg-clay-accent hover:bg-clay-accent/90 text-black text-xs font-bold px-4 py-2 rounded-lg transition active:scale-95 shadow-sm flex items-center gap-1.5">
+          <span>Launch Studio</span>
+          <!-- Hugeicons: Arrow Right -->
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ==================== HERO SECTION (CLAY CRAFTED) ==================== -->
+  <section class="relative pt-16 pb-20 md:pt-24 md:pb-28 overflow-hidden hero-glow">
+    <div class="max-w-7xl mx-auto px-6 text-center space-y-7 relative z-10">
+      
+      <!-- Top Announcement Pill -->
+      <div class="inline-flex items-center gap-2 bg-clay-surface border border-clay-border px-4 py-1.5 rounded-full text-xs font-medium text-clay-textSecondary shadow-sm">
+        <span class="w-2 h-2 rounded-full bg-clay-accent"></span>
+        <span class="text-white font-semibold">Moove Developer Fund Candidate</span>
+        <span class="text-clay-textMuted">•</span>
+        <span class="text-clay-accent">Up to $10,000 Grant</span>
+        <span class="text-clay-textMuted">•</span>
+        <span>Zero Custody Architecture</span>
+      </div>
+
+      <!-- Main Headline -->
+      <h1 class="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-white max-w-5xl mx-auto leading-[1.1]">
+        Autonomous Agent Commerce <br/>
+        <span class="text-transparent bg-clip-text bg-gradient-to-r from-clay-accent via-[#FFE485] to-white">
+          Without Human Checkout.
+        </span>
+      </h1>
+
+      <!-- Subheadline -->
+      <p class="text-clay-textSecondary text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
+        The universal Agent-to-Agent (A2A) micro-commerce gateway and Model Context Protocol (MCP) server. Pair SHA-256 cryptographic commitments with Moove's 30+ blockchain settlement rails.
+      </p>
+
+      <!-- Primary Action Buttons -->
+      <div class="flex flex-wrap items-center justify-center gap-3 pt-2">
+        <a href="dashboard/index.html" class="bg-clay-accent hover:bg-clay-accent/90 text-black font-bold px-6 py-3 rounded-xl text-sm transition active:scale-95 shadow-lg shadow-clay-accent/10 flex items-center gap-2">
+          <span>Open Interactive Studio</span>
+          <!-- Hugeicons: Flash -->
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+          </svg>
+        </a>
+
+        <a href="#mcp" class="bg-clay-surface hover:bg-clay-hover border border-clay-border text-white font-semibold px-5 py-3 rounded-xl text-sm transition flex items-center gap-2">
+          <!-- Hugeicons: Terminal -->
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m4 17 6-6-6-6M12 19h8"></path>
+          </svg>
+          <span>Install Moove MCP</span>
+        </a>
+      </div>
+
+      <!-- Trust Metrics Strip -->
+      <div class="pt-10 grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-4xl mx-auto text-left">
+        <div class="bg-clay-surface/70 border border-clay-border rounded-xl p-4">
+          <div class="text-[11px] text-clay-textMuted uppercase font-semibold">Settlement Rails</div>
+          <div class="text-xl font-extrabold text-white mt-1">30+ Chains</div>
+          <div class="text-[11px] text-clay-textSecondary mt-0.5">Ethereum, Solana, Base, Arbitrum</div>
+        </div>
+
+        <div class="bg-clay-surface/70 border border-clay-border rounded-xl p-4">
+          <div class="text-[11px] text-clay-textMuted uppercase font-semibold">Supported Assets</div>
+          <div class="text-xl font-extrabold text-clay-accent mt-1">16,000+ Tokens</div>
+          <div class="text-[11px] text-clay-textSecondary mt-0.5">Auto-cleared to USDC</div>
+        </div>
+
+        <div class="bg-clay-surface/70 border border-clay-border rounded-xl p-4">
+          <div class="text-[11px] text-clay-textMuted uppercase font-semibold">Custody Risk</div>
+          <div class="text-xl font-extrabold text-emerald-400 mt-1">0% Non-Custodial</div>
+          <div class="text-[11px] text-clay-textSecondary mt-0.5">Zero private keys stored</div>
+        </div>
+
+        <div class="bg-clay-surface/70 border border-clay-border rounded-xl p-4">
+          <div class="text-[11px] text-clay-textMuted uppercase font-semibold">Average Latency</div>
+          <div class="text-xl font-extrabold text-white mt-1">&lt; 3.0 Seconds</div>
+          <div class="text-[11px] text-clay-textSecondary mt-0.5">Polite rate-limited polling</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== THE FUNDAMENTAL PROBLEM (CLEVE 1986) ==================== -->
+  <section id="problem" class="py-20 border-t border-clay-border bg-clay-surface/40">
+    <div class="max-w-7xl mx-auto px-6 space-y-12">
+      
+      <div class="text-center max-w-3xl mx-auto space-y-3">
+        <span class="text-xs font-bold uppercase tracking-wider text-clay-accent bg-clay-accentSoft px-3 py-1 rounded-full border border-clay-accent/30">
+          The Distributed Systems Dilemma
+        </span>
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+          Why Autonomous Agents Can't Use Credit Cards
+        </h2>
+        <p class="text-clay-textSecondary text-sm sm:text-base">
+          In 1986, computer scientist Richard Cleve proved that complete fair exchange without a trusted intermediary is impossible in asynchronous networks. Until now.
+        </p>
+      </div>
+
+      <!-- Problem vs Solution Comparison Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+        
+        <!-- Without MooveGate (Broken) -->
+        <div class="bg-clay-surface border border-red-500/20 rounded-2xl p-6 sm:p-8 space-y-5">
+          <div class="flex items-center justify-between border-b border-clay-border pb-4">
+            <span class="text-xs font-bold uppercase tracking-wider text-red-400 flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-red-400"></span>
+              Legacy / Broken Rails
+            </span>
+            <span class="text-[11px] font-mono text-clay-textMuted">High Counterparty Risk</span>
+          </div>
+
+          <ul class="space-y-4 text-xs text-clay-textSecondary">
+            <li class="flex items-start gap-3">
+              <span class="text-red-400 font-bold">✕</span>
+              <span><strong>Pre-payment Risk:</strong> Buyer agent pays upfront. Seller agent crashes or defects. Buyer loses capital with zero recourse.</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-red-400 font-bold">✕</span>
+              <span><strong>Compute Theft:</strong> Seller agent delivers confidential research/code first. Buyer agent consumes output and refuses to pay.</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-red-400 font-bold">✕</span>
+              <span><strong>Legacy Paywall Friction:</strong> Cards demand human 2FA, KYC, and chargeback windows that freeze bots. Minimum fees ($0.30 + 3%) destroy sub-dollar agent calls.</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- With MooveGate (Fixed) -->
+        <div class="bg-clay-surface border border-emerald-500/30 rounded-2xl p-6 sm:p-8 space-y-5 glow-card transition">
+          <div class="flex items-center justify-between border-b border-clay-border pb-4">
+            <span class="text-xs font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+              MooveGate Protocol
+            </span>
+            <span class="text-[11px] font-mono text-clay-accent">Subgame-Perfect Nash Equilibrium</span>
+          </div>
+
+          <ul class="space-y-4 text-xs text-clay-textSecondary">
+            <li class="flex items-start gap-3">
+              <span class="text-emerald-400 font-bold">✓</span>
+              <span><strong>Cryptographic Hash Commitment:</strong> Seller locks deliverable under ephemeral AES-256 key and publishes immutable SHA-256 pre-image digest.</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-emerald-400 font-bold">✓</span>
+              <span><strong>Moove Receive Agent Rails:</strong> Moove creates a hosted payment link bound to the hash commitment prefix for automatic dashboard reconciliation.</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-emerald-400 font-bold">✓</span>
+              <span><strong>Atomic Key Release:</strong> Buyer settles cross-chain. Moove verifies finality on-chain. Key is released and pre-image is mathematically verified.</span>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== PROTOCOL ARCHITECTURE (HOW IT WORKS) ==================== -->
+  <section id="protocol" class="py-20 border-t border-clay-border">
+    <div class="max-w-7xl mx-auto px-6 space-y-12">
+      
+      <div class="text-center max-w-3xl mx-auto space-y-3">
+        <span class="text-xs font-bold uppercase tracking-wider text-clay-accent bg-clay-accentSoft px-3 py-1 rounded-full border border-clay-accent/30">
+          The 4-Step Protocol
+        </span>
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+          How MooveGate Moves Value Between Agents
+        </h2>
+        <p class="text-clay-textSecondary text-sm sm:text-base">
+          Strictly compliant with Moove's Receive Agent contract. Never moves funds without settlement, never stores private keys.
+        </p>
+      </div>
+
+      <!-- 4-Step Visual Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        
+        <!-- Step 1 -->
+        <div class="bg-clay-surface border border-clay-border rounded-xl p-5 space-y-3 transition hover:border-clay-textMuted">
+          <div class="flex items-center justify-between">
+            <span class="w-7 h-7 rounded-lg bg-blue-500/10 text-blue-400 font-bold text-xs flex items-center justify-center border border-blue-500/20">01</span>
+            <span class="text-[10px] font-mono text-clay-textMuted">Bilateral Spec</span>
+          </div>
+          <h3 class="font-bold text-white text-sm">Task Negotiation</h3>
+          <p class="text-xs text-clay-textSecondary leading-relaxed">
+            Client agent requests formal compute, zero-knowledge audit, or proprietary dataset query with budget in USDC.
+          </p>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="bg-clay-surface border border-clay-border rounded-xl p-5 space-y-3 transition hover:border-clay-textMuted">
+          <div class="flex items-center justify-between">
+            <span class="w-7 h-7 rounded-lg bg-clay-accentSoft text-clay-accent font-bold text-xs flex items-center justify-center border border-clay-accent/30">02</span>
+            <span class="text-[10px] font-mono text-clay-textMuted">HLDM Engine</span>
+          </div>
+          <h3 class="font-bold text-white text-sm">SHA-256 Envelope Seal</h3>
+          <p class="text-xs text-clay-textSecondary leading-relaxed">
+            Supplier computes deliverable, seals it with an ephemeral 256-bit symmetric key, and publishes the immutable hash digest.
+          </p>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="bg-clay-surface border border-clay-border rounded-xl p-5 space-y-3 transition hover:border-clay-textMuted">
+          <div class="flex items-center justify-between">
+            <span class="w-7 h-7 rounded-lg bg-clay-accentSoft text-clay-accent font-bold text-xs flex items-center justify-center border border-clay-accent/30">03</span>
+            <span class="text-[10px] font-mono text-clay-textMuted">POST /v1/payment-link</span>
+          </div>
+          <h3 class="font-bold text-white text-sm">Moove Link Generation</h3>
+          <p class="text-xs text-clay-textSecondary leading-relaxed">
+            Moove Receive Agent mints a hosted payment link with exact decimal string amount and hash commitment description.
+          </p>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="bg-clay-surface border border-clay-border rounded-xl p-5 space-y-3 transition hover:border-clay-textMuted">
+          <div class="flex items-center justify-between">
+            <span class="w-7 h-7 rounded-lg bg-emerald-500/10 text-emerald-400 font-bold text-xs flex items-center justify-center border border-emerald-500/20">04</span>
+            <span class="text-[10px] font-mono text-clay-textMuted">Zero Human Loop</span>
+          </div>
+          <h3 class="font-bold text-white text-sm">Key Release & Finality</h3>
+          <p class="text-xs text-clay-textSecondary leading-relaxed">
+            Upon Moove on-chain settlement, the ephemeral key is revealed, decrypting the payload with mathematical pre-image verification.
+          </p>
+        </div>
+
+      </div>
+
+      <!-- Live Code Integration Snippet (Python & TypeScript) -->
+      <div class="bg-clay-surface border border-clay-border rounded-2xl p-6 sm:p-8 max-w-4xl mx-auto space-y-4">
+        <div class="flex items-center justify-between border-b border-clay-border pb-3">
+          <div class="flex items-center gap-2 text-xs font-bold text-white">
+            <!-- Hugeicons: Code -->
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-clay-accent">
+              <polyline points="16 18 22 12 16 6"></polyline>
+              <polyline points="8 6 2 12 8 18"></polyline>
+            </svg>
+            <span>Monetize Any Function in 3 Lines of Python</span>
+          </div>
+          <span class="text-[10px] font-mono text-clay-textMuted">HTTP 402 Autonomous Paywall</span>
+        </div>
+
+        <div class="bg-black/80 p-4 rounded-xl border border-clay-border font-mono text-xs text-gray-300 overflow-x-auto">
+          <pre><span class="text-purple-400">from</span> moovegate <span class="text-purple-400">import</span> moove_paywall
+
+<span class="text-clay-textMuted"># Protect any AI tool, research API, or computation</span>
+<span class="text-clay-accent">@moove_paywall</span>(price=<span class="text-emerald-400">"5.00"</span>, memo=<span class="text-emerald-400">"Formal-Audit-Task"</span>)
+<span class="text-purple-400">async def</span> <span class="text-blue-400">audit_smart_contract</span>(contract_source: str):
+    <span class="text-purple-400">return</span> {<span class="text-emerald-400">"status"</span>: <span class="text-emerald-400">"verified"</span>, <span class="text-emerald-400">"vulnerabilities"</span>: 0}</pre>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== MODEL CONTEXT PROTOCOL (MCP) SECTION ==================== -->
+  <section id="mcp" class="py-20 border-t border-clay-border bg-clay-surface/40">
+    <div class="max-w-7xl mx-auto px-6 space-y-12">
+      
+      <div class="text-center max-w-3xl mx-auto space-y-3">
+        <span class="text-xs font-bold uppercase tracking-wider text-purple-400 bg-purple-500/10 px-3 py-1 rounded-full border border-purple-500/20">
+          Native AI Tooling
+        </span>
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+          The First Moove Model Context Protocol Server
+        </h2>
+        <p class="text-clay-textSecondary text-sm sm:text-base">
+          Drop MooveGate into Anthropic Claude Desktop, Cursor IDE, Windsurf, or LangGraph. Give your agents native wallets to bill clients and peer agents.
+        </p>
+      </div>
+
+      <!-- Config Box -->
+      <div class="bg-clay-surface border border-clay-border rounded-2xl p-6 max-w-3xl mx-auto space-y-4">
+        <div class="flex items-center justify-between text-xs text-clay-textSecondary">
+          <span class="font-mono">claude_desktop_config.json</span>
+          <button class="text-clay-accent hover:underline font-semibold" onclick="navigator.clipboard.writeText(document.getElementById('mcp-json').innerText); alert('Copied MCP config!')">
+            Copy Config
+          </button>
+        </div>
+
+        <div class="bg-black/90 p-4 rounded-xl border border-clay-border font-mono text-xs text-gray-300 overflow-x-auto">
+          <pre id="mcp-json">{
+  "mcpServers": {
+    "moovegate": {
+      "command": "python",
+      "args": ["-m", "mcp_server.server"],
+      "env": {
+        "MOOVE_API_KEY": "mk_live_your_moove_key",
+        "MOOVE_API_BASE_URL": "https://api.moove.xyz"
+      }
+    }
+  }
+}</pre>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== INTERACTIVE DEMO CALLOUT ==================== -->
+  <section id="demo" class="py-20 border-t border-clay-border">
+    <div class="max-w-5xl mx-auto px-6">
+      <div class="bg-gradient-to-b from-clay-surface to-clay-card border border-clay-border rounded-3xl p-8 sm:p-12 text-center space-y-6 relative overflow-hidden glow-card">
+        
+        <div class="inline-flex items-center gap-2 bg-clay-accentSoft text-clay-accent border border-clay-accent/30 text-xs font-bold px-3 py-1 rounded-full">
+          <span>Live Simulation Studio</span>
+        </div>
+
+        <h2 class="text-3xl sm:text-5xl font-extrabold text-white tracking-tight">
+          Experience the Autonomous A2A Economy
+        </h2>
+
+        <p class="text-clay-textSecondary text-sm sm:text-base max-w-2xl mx-auto">
+          Watch two autonomous agents negotiate in real time, lock deliverables under SHA-256 pre-images, mint Moove payment links, and settle cross-chain with zero human friction.
+        </p>
+
+        <div class="pt-4 flex flex-wrap items-center justify-center gap-3">
+          <a href="dashboard/index.html" class="bg-clay-accent hover:bg-clay-accent/90 text-black font-bold px-7 py-3.5 rounded-xl text-sm transition active:scale-95 shadow-lg shadow-clay-accent/20 flex items-center gap-2">
+            <span>Launch Clay Studio</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </a>
+
+          <a href="https://github.com/salch-cred/moovegate" target="_blank" class="bg-clay-surface hover:bg-clay-hover border border-clay-border text-white font-semibold px-6 py-3.5 rounded-xl text-sm transition">
+            View Source Code
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== $10,000 GRANT ALLOCATION SECTION ==================== -->
+  <section id="grant" class="py-20 border-t border-clay-border bg-clay-surface/40">
+    <div class="max-w-7xl mx-auto px-6 space-y-12">
+      
+      <div class="text-center max-w-3xl mx-auto space-y-3">
+        <span class="text-xs font-bold uppercase tracking-wider text-clay-accent bg-clay-accentSoft px-3 py-1 rounded-full border border-clay-accent/30">
+          Moove Developer Fund
+        </span>
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+          $10,000 Milestone Disbursement Plan
+        </h2>
+        <p class="text-clay-textSecondary text-sm sm:text-base">
+          Transparent, verifiable, milestone-based deployment from the $100,000 Moove Developer Fund.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="bg-clay-surface border border-clay-border rounded-xl p-5 space-y-2">
+          <span class="text-xs font-bold text-clay-accent">Milestone 1 — $2,500</span>
+          <h4 class="font-bold text-white text-sm">Core Engine & SDKs</h4>
+          <p class="text-xs text-clay-textSecondary">Python & TS SDKs, decimal string validation, polite polling.</p>
+          <span class="text-[10px] text-emerald-400 font-semibold block pt-2">✓ Shipped & Tested</span>
+        </div>
+
+        <div class="bg-clay-surface border border-clay-border rounded-xl p-5 space-y-2">
+          <span class="text-xs font-bold text-clay-accent">Milestone 2 — $2,500</span>
+          <h4 class="font-bold text-white text-sm">Moove MCP Server</h4>
+          <p class="text-xs text-clay-textSecondary">Standard JSON-RPC server for Claude Desktop, Cursor, LangGraph.</p>
+          <span class="text-[10px] text-emerald-400 font-semibold block pt-2">✓ Prototype Ready</span>
+        </div>
+
+        <div class="bg-clay-surface border border-clay-border rounded-xl p-5 space-y-2">
+          <span class="text-xs font-bold text-clay-accent">Milestone 3 — $2,500</span>
+          <h4 class="font-bold text-white text-sm">Interactive Studio</h4>
+          <p class="text-xs text-clay-textSecondary">Clay.com design system, live A2A visual simulator, merchant analytics.</p>
+          <span class="text-[10px] text-emerald-400 font-semibold block pt-2">✓ Live Demo Live</span>
+        </div>
+
+        <div class="bg-clay-surface border border-clay-border rounded-xl p-5 space-y-2">
+          <span class="text-xs font-bold text-clay-accent">Milestone 4 — $2,500</span>
+          <h4 class="font-bold text-white text-sm">Mainnet Fleet</h4>
+          <p class="text-xs text-clay-textSecondary">5 live autonomous bots settling micro-transactions on Moove handles.</p>
+          <span class="text-[10px] text-clay-textMuted font-semibold block pt-2">Pending Grant Approval</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== FAQ SECTION ==================== -->
+  <section class="py-20 border-t border-clay-border">
+    <div class="max-w-4xl mx-auto px-6 space-y-8">
+      <div class="text-center space-y-3">
+        <h2 class="text-3xl font-extrabold text-white tracking-tight">Frequently Asked Questions</h2>
+        <p class="text-xs text-clay-textSecondary">Technical answers for developers, researchers, and grant evaluators.</p>
+      </div>
+
+      <div class="space-y-4 text-xs">
+        <div class="bg-clay-surface border border-clay-border rounded-xl p-5 space-y-2">
+          <h3 class="font-bold text-white text-sm">Does MooveGate ever custody funds or hold private keys?</h3>
+          <p class="text-clay-textSecondary leading-relaxed">
+            No. MooveGate adheres strictly to the Zero-Custody Principle. It uses Moove's Receive Agent to generate hosted payment links. All funds settle directly to the developer's verified Moove Profile handle.
+          </p>
+        </div>
+
+        <div class="bg-clay-surface border border-clay-border rounded-xl p-5 space-y-2">
+          <h3 class="font-bold text-white text-sm">How does MooveGate prevent floating point financial errors?</h3>
+          <p class="text-clay-textSecondary leading-relaxed">
+            Moove API strictly enforces decimal strings (e.g. <code class="text-clay-accent">"50.00"</code>). MooveGate uses strict Pydantic and TypeScript string validators to prevent IEEE-754 precision issues like <code class="text-clay-accent">0.1 + 0.2 = 0.30000000000000004</code>.
+          </p>
+        </div>
+
+        <div class="bg-clay-surface border border-clay-border rounded-xl p-5 space-y-2">
+          <h3 class="font-bold text-white text-sm">How does the Hash-Locked Deliverable Mechanism (HLDM) work?</h3>
+          <p class="text-clay-textSecondary leading-relaxed">
+            The supplier agent computes the deliverable, derives an ephemeral 256-bit symmetric key, encrypts the payload, and produces a SHA-256 pre-image digest. The Moove invoice references this hash. Upon on-chain settlement confirmation, the key is revealed and the buyer mathematically verifies that the pre-image matches.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="border-t border-clay-border py-10 bg-clay-surface/60 text-xs text-clay-textSecondary">
+    <div class="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-2">
+        <span class="font-bold text-white">MooveGate</span>
+        <span>• Built for the Moove Developer Program</span>
+      </div>
+
+      <div class="flex items-center gap-6">
+        <a href="https://www.moove.xyz" target="_blank" class="hover:text-white transition">moove.xyz</a>
+        <a href="https://docs.moove.xyz" target="_blank" class="hover:text-white transition">Moove Docs</a>
+        <a href="https://github.com/salch-cred/moovegate" target="_blank" class="hover:text-white transition">GitHub</a>
+        <a href="dashboard/index.html" class="text-clay-accent font-semibold hover:underline">Launch Studio</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
