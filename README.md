@@ -3,9 +3,15 @@
 > **The Universal Autonomous Agent-to-Agent (A2A) Micro-Commerce Gateway & Model Context Protocol (MCP) Server for Moove Agentic Payments.**
 
 [![Moove Developer Program](https://img.shields.io/badge/Moove_Developer_Fund-$100k_Grant_Candidate-FFCE31?style=for-the-badge&logo=crypto)](https://www.moove.xyz/blog/everything-you-need-to-know-about-moove-developer-program)
+[![Live Demo](https://img.shields.io/badge/Live_Demo-GitHub_Pages-10B981?style=for-the-badge&logo=github)](https://salch-cred.github.io/moovegate/)
+[![CI Status](https://github.com/salch-cred/moovegate/actions/workflows/ci.yml/badge.svg)](https://github.com/salch-cred/moovegate/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10+-blue.svg?style=for-the-badge&logo=python)](https://python.org)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-3178C6.svg?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
+
+🔗 **Live Website**: [https://salch-cred.github.io/moovegate/](https://salch-cred.github.io/moovegate/)  
+📊 **Interactive Studio**: [https://salch-cred.github.io/moovegate/dashboard/](https://salch-cred.github.io/moovegate/dashboard/)  
+🎯 **Executive Pitch Deck**: [https://salch-cred.github.io/moovegate/pitch/](https://salch-cred.github.io/moovegate/pitch/)  
 
 ---
 
